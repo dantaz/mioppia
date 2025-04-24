@@ -51,19 +51,19 @@
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const slider = document.getElementById('slider');
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PNG_transparency_demonstration_1.png/640px-PNG_transparency_demonstration_1.png';
 
-    slider.addEventListener('input', () => {
-      drawDistorted(parseFloat(slider.value));
-    });
+    function drawText() {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'black';
+      ctx.font = 'bold 24px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('Texto de Teste para Correção Visual', canvas.width / 2, canvas.height / 2);
+    }
 
     function drawDistorted(strength) {
       const width = canvas.width;
       const height = canvas.height;
-      ctx.clearRect(0, 0, width, height);
-      ctx.drawImage(img, 0, 0, width, height);
       const imageData = ctx.getImageData(0, 0, width, height);
       const data = imageData.data;
       const output = ctx.createImageData(width, height);
@@ -91,8 +91,13 @@
       ctx.putImageData(output, 0, 0);
     }
 
-    img.onload = () => {
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    slider.addEventListener('input', () => {
+      drawText();
+      drawDistorted(parseFloat(slider.value));
+    });
+
+    window.onload = () => {
+      drawText();
       drawDistorted(parseFloat(slider.value));
     };
   </script>
