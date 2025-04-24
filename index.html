@@ -1,102 +1,86 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2566">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Correção de Miopia</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2rem;
+      background: #111;
+      color: white;
+    }
+    canvas {
+      max-width: 100%;
+      border: 2px solid #fff;
+    }
+    #slider {
+      width: 80%;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="pt-BR"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Simulador de Correção de Miopia&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #111;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>canvas {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 2px solid #fff;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#slider {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 80%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Simulador de Correção de Miopia&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;canvas id="canvas" width="600" height="400"&gt;&lt;/canvas&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;label for="slider"&gt;Ajuste do Grau de Miopia (Simulado):&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="range" id="slider" min="0" max="2" step="0.01" value="0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const canvas = document.getElementById('canvas');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const ctx = canvas.getContext('2d');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const slider = document.getElementById('slider');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const img = new Image();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PNG_transparency_demonstration_1.png/640px-PNG_transparency_demonstration_1.png';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>img.onload = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>drawDistorted(0);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>slider.addEventListener('input', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>drawDistorted(parseFloat(slider.value));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function drawDistorted(strength) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const width = canvas.width;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const height = canvas.height;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const imageData = ctx.getImageData(0, 0, width, height);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const data = imageData.data;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const output = ctx.createImageData(width, height);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>for (let y = 0; y &lt; height; y++) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>for (let x = 0; x &lt; width; x++) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const dx = (x - width / 2) / width;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const dy = (y - height / 2) / height;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const dist = Math.sqrt(dx * dx + dy * dy);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>const factor = 1 + strength * dist * dist;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const srcX = Math.min(Math.max(Math.floor((x - width / 2) * factor + width / 2), 0), width - 1);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const srcY = Math.min(Math.max(Math.floor((y - height / 2) * factor + height / 2), 0), height - 1);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>const srcIndex = (srcY * width + srcX) * 4;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const destIndex = (y * width + x) * 4;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">          </span>output.data[destIndex] = data[srcIndex];</p>
-<p class="p1"><span class="Apple-converted-space">          </span>output.data[destIndex + 1] = data[srcIndex + 1];</p>
-<p class="p1"><span class="Apple-converted-space">          </span>output.data[destIndex + 2] = data[srcIndex + 2];</p>
-<p class="p1"><span class="Apple-converted-space">          </span>output.data[destIndex + 3] = 255;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>ctx.putImageData(output, 0, 0);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>img.onload = function () {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>ctx.drawImage(img, 0, 0, canvas.width, canvas.height);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>ctx.putImageData(imageData, 0, 0);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>drawDistorted(parseFloat(slider.value));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <h1>Simulador de Correção de Miopia</h1>
+  <canvas id="canvas" width="600" height="400"></canvas>
+  <div>
+    <label for="slider">Ajuste do Grau de Miopia (Simulado):</label>
+    <input type="range" id="slider" min="0" max="2" step="0.01" value="0">
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const slider = document.getElementById('slider');
+    const img = new Image();
+    img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/PNG_transparency_demonstration_1.png/640px-PNG_transparency_demonstration_1.png';
+
+    img.onload = () => {
+      drawDistorted(0);
+    };
+
+    slider.addEventListener('input', () => {
+      drawDistorted(parseFloat(slider.value));
+    });
+
+    function drawDistorted(strength) {
+      const width = canvas.width;
+      const height = canvas.height;
+      const imageData = ctx.getImageData(0, 0, width, height);
+      const data = imageData.data;
+      const output = ctx.createImageData(width, height);
+
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const dx = (x - width / 2) / width;
+          const dy = (y - height / 2) / height;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          const factor = 1 + strength * dist * dist;
+          const srcX = Math.min(Math.max(Math.floor((x - width / 2) * factor + width / 2), 0), width - 1);
+          const srcY = Math.min(Math.max(Math.floor((y - height / 2) * factor + height / 2), 0), height - 1);
+
+          const srcIndex = (srcY * width + srcX) * 4;
+          const destIndex = (y * width + x) * 4;
+
+          output.data[destIndex] = data[srcIndex];
+          output.data[destIndex + 1] = data[srcIndex + 1];
+          output.data[destIndex + 2] = data[srcIndex + 2];
+          output.data[destIndex + 3] = 255;
+        }
+      }
+
+      ctx.putImageData(output, 0, 0);
+    }
+
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      ctx.putImageData(imageData, 0, 0);
+      drawDistorted(parseFloat(slider.value));
+    };
+  </script>
 </body>
 </html>
